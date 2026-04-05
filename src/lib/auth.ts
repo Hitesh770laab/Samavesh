@@ -12,7 +12,7 @@ export const auth = betterAuth({
     }),
 	emailAndPassword: {
 		enabled: true,
-		requireEmailVerification: false, // Set to true if you want email verification
+		requireEmailVerification: false, // Set to true only after email verification flow is set up
 	},
 	baseURL: process.env.BETTER_AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000",
 	secret: process.env.BETTER_AUTH_SECRET,

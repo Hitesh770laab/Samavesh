@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
-	const session = await auth.api.getSession({
-		headers: await headers()
-	})
+	// Use fetch to bypass importing heavy db adapters into the Edge runtime
+	const response = await fetch(new URL("/api/auth/get-session", request.url), {
+		headers: {
+			cookie: request.headers.get("cookie") || "",
+		},
+	});
+	
+	const session = response.ok ? await response.json() : null;
 
 	if (!session) {
 		return NextResponse.redirect(new URL("/login", request.url));
@@ -15,6 +18,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	runtime: "nodejs",
 	matcher: ["/captions", "/reader"], // Apply middleware to specific routes
 };

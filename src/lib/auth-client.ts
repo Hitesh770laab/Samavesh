@@ -12,7 +12,7 @@ const getBaseURL = () => {
 };
 
 export const authClient = createAuthClient({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+    baseURL: getBaseURL(),
     plugins: [],
 });
 
@@ -21,5 +21,4 @@ export const {
     signIn, 
     signUp, 
     signOut, 
-    useListSessions 
 } = authClient;
